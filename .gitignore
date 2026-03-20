@@ -25,6 +25,9 @@ target
 # Output folder for the packet logger, don't need to commit these
 packet-logs/
 
+# Default screenshot capture directory
+capture/
+
 # Temporary agent tracking files, only useful during singular feature development, which
 # shouldn't span between `git push` operations anywyway. These don't serve long-term
 # value.

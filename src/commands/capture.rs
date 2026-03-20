@@ -16,8 +16,8 @@ pub fn execute(conn: &mut Connection, action: CaptureAction) -> Result<Value> {
             let data = conn.request("capture", "get_screens", vec![])?;
             Ok(Value::Array(data))
         }
-        CaptureAction::GetJpg { screen, quality, divide, output, base64 } => {
-            get_jpg(conn, screen, quality, divide, output, base64)
+        CaptureAction::GetJpg { screen, quality, divide, output_path, output_folder, base64 } => {
+            get_jpg(conn, screen, quality, divide, output_path, output_folder, base64)
         }
     }
 }
@@ -27,7 +27,8 @@ fn get_jpg(
     screen: u32,
     quality: u32,
     divide: u32,
-    output: Option<String>,
+    output_path: Option<String>,
+    output_folder: Option<String>,
     base64_mode: bool,
 ) -> Result<Value> {
     let data = conn.request(
@@ -48,9 +49,14 @@ fn get_jpg(
 
     // Decode and write to file
     let jpeg_bytes = BASE64.decode(b64_str)?;
-    let path = output.unwrap_or_else(|| {
-        Local::now().format("capture_%Y%m%d_%H%M%S.jpg").to_string()
-    });
+    let auto_name = || Local::now().format("capture_%Y%m%d_%H%M%S.jpg").to_string();
+    let folder = output_folder.unwrap_or_else(|| "capture".to_string());
+    let path = if let Some(p) = output_path {
+        p
+    } else {
+        fs::create_dir_all(&folder)?;
+        format!("{}/{}", folder.trim_end_matches('/'), auto_name())
+    };
 
     fs::File::create(&path)?.write_all(&jpeg_bytes)?;
     eprintln!("{path}");

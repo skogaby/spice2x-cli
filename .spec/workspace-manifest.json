@@ -22,8 +22,8 @@
     "20260319-initial-cli-core": {
       "primaryPackage": "spice2x-cli",
       "workflowPath": ".spec/tasks/20260319-initial-cli-core",
-      "status": "in-progress",
-      "stage": "implementation",
+      "status": "completed",
+      "stage": "done",
       "createdDate": "2026-03-19T16:30:14-05:00",
       "parentSimId": null,
       "childSimIds": {}

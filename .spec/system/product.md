@@ -49,7 +49,7 @@ The primary use case is enabling an AI agent to autonomously interact with and o
 - RC4 encryption is optional — an empty password means plaintext communication.
 - Request IDs are monotonically increasing (per-process). Session refresh uses a random ID to avoid collisions with the normal sequence.
 - Transient connection errors (TCP failures) are retried up to 3 times with automatic reconnect. API-level errors and ID mismatches are never retried.
-- Screenshots come back as base64-encoded JPEG data in the response `data` array: `[timestamp, width, height, base64_string]`.
+- Screenshots come back as base64-encoded JPEG data in the response `data` array: `[timestamp, width, height, base64_string]`. By default they are saved to the `capture/` directory with auto-generated timestamped filenames.
 
 ## Out of Scope
 

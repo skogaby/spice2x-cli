@@ -148,8 +148,11 @@ pub enum CaptureAction {
         #[arg(long, default_value_t = 1)]
         divide: u32,
         /// Output file path (auto-generated if omitted)
-        #[arg(long)]
-        output: Option<String>,
+        #[arg(long, conflicts_with = "output_folder")]
+        output_path: Option<String>,
+        /// Output folder (file is auto-named with timestamp)
+        #[arg(long, conflicts_with = "output_path")]
+        output_folder: Option<String>,
         /// Output base64 to stdout instead of saving to file
         #[arg(long)]
         base64: bool,
@@ -322,11 +325,12 @@ mod tests {
     fn capture_get_jpg_defaults() {
         let cli = parse(&["spice2x-cli", "capture", "get-jpg"]);
         match cli.command {
-            Commands::Capture { action: CaptureAction::GetJpg { screen, quality, divide, output, base64 } } => {
+            Commands::Capture { action: CaptureAction::GetJpg { screen, quality, divide, output_path, output_folder, base64 } } => {
                 assert_eq!(screen, 0);
                 assert_eq!(quality, 70);
                 assert_eq!(divide, 1);
-                assert!(output.is_none());
+                assert!(output_path.is_none());
+                assert!(output_folder.is_none());
                 assert!(!base64);
             }
             _ => panic!("expected capture get-jpg"),
@@ -338,15 +342,30 @@ mod tests {
         let cli = parse(&[
             "spice2x-cli", "capture", "get-jpg",
             "--screen", "1", "--quality", "90", "--divide", "2",
-            "--output", "shot.jpg", "--base64",
+            "--output-path", "shot.jpg", "--base64",
         ]);
         match cli.command {
-            Commands::Capture { action: CaptureAction::GetJpg { screen, quality, divide, output, base64 } } => {
+            Commands::Capture { action: CaptureAction::GetJpg { screen, quality, divide, output_path, output_folder, base64 } } => {
                 assert_eq!(screen, 1);
                 assert_eq!(quality, 90);
                 assert_eq!(divide, 2);
-                assert_eq!(output.as_deref(), Some("shot.jpg"));
+                assert_eq!(output_path.as_deref(), Some("shot.jpg"));
+                assert!(output_folder.is_none());
                 assert!(base64);
+            }
+            _ => panic!("expected capture get-jpg"),
+        }
+    }
+
+    #[test]
+    fn capture_get_jpg_output_folder() {
+        let cli = parse(&[
+            "spice2x-cli", "capture", "get-jpg", "--output-folder", "/tmp/caps",
+        ]);
+        match cli.command {
+            Commands::Capture { action: CaptureAction::GetJpg { output_path, output_folder, .. } } => {
+                assert!(output_path.is_none());
+                assert_eq!(output_folder.as_deref(), Some("/tmp/caps"));
             }
             _ => panic!("expected capture get-jpg"),
         }

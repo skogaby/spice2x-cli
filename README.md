@@ -146,13 +146,16 @@ Valid key characters: `0`–`9`, `A` (00 key), `D` (decimal key).
 #### capture — Screenshots
 
 ```bash
-spice2x-cli capture get-screens                          # List available screen indices
-spice2x-cli capture get-jpg                              # Save screenshot (auto-named capture_YYYYMMDD_HHMMSS.jpg)
-spice2x-cli capture get-jpg --output shot.jpg            # Save to specific path
-spice2x-cli capture get-jpg --base64                     # Output base64 to stdout
-spice2x-cli capture get-jpg --screen 1 --quality 90      # Screen 1, quality 90
-spice2x-cli capture get-jpg --divide 2                   # Half-size image
+spice2x-cli capture get-screens                                    # List available screen indices
+spice2x-cli capture get-jpg                                        # Save to capture/capture_YYYYMMDD_HHMMSS.jpg
+spice2x-cli capture get-jpg --output-path shot.jpg                 # Save to specific file path
+spice2x-cli capture get-jpg --output-folder /tmp/caps              # Save auto-named file to /tmp/caps/
+spice2x-cli capture get-jpg --base64                               # Output base64 to stdout
+spice2x-cli capture get-jpg --screen 1 --quality 90                # Screen 1, quality 90
+spice2x-cli capture get-jpg --divide 2                             # Half-size image
 ```
+
+By default, screenshots are saved to the `capture/` directory (created automatically). Use `--output-path` for a specific file path, or `--output-folder` to change the directory while keeping auto-generated filenames.
 
 When saving to file, the file path is printed to stderr so stdout stays clean for piping.
 
