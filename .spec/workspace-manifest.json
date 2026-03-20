@@ -1,0 +1,32 @@
+{
+  "workspaceType": "standard",
+  "packages": {
+    "spice2x-cli": {
+      "type": "service",
+      "path": ".",
+      "buildSystem": "cargo",
+      "buildStatus": "pending"
+    }
+  },
+  "steeringIndex": {
+    "allReadmes": ["README.md"],
+    "allSteeringFiles": [
+      ".spec/system/product.md",
+      ".spec/system/tech.md",
+      ".spec/system/structure.md"
+    ]
+  },
+  "bootstrapDate": "2026-03-19T16:30:14-05:00",
+  "buildVerified": false,
+  "features": {
+    "20260319-initial-cli-core": {
+      "primaryPackage": "spice2x-cli",
+      "workflowPath": ".spec/tasks/20260319-initial-cli-core",
+      "status": "in-progress",
+      "stage": "implementation",
+      "createdDate": "2026-03-19T16:30:14-05:00",
+      "parentSimId": null,
+      "childSimIds": {}
+    }
+  }
+}
